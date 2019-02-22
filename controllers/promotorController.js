@@ -33,7 +33,14 @@ module.exports = {
   },
 
   getAll: (req, res) => {
-
+    Promotor
+    .find()
+    .then(promotors => {
+      res.json({ promotors })
+    })
+    .catch(error => {
+      res.status(400).json({ message: error.message })
+    })
   },
 
   getOne: (req, res) => {

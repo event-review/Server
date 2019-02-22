@@ -56,7 +56,14 @@ module.exports = {
   },
 
   getAll: (req, res) => {
-
+    User
+      .find()
+      .then(users => {
+        res.status(200).json({users})
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
   },
 
   getOne: (req, res) => {
