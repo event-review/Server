@@ -3,6 +3,7 @@ var router = express.Router();
 const eventController = require('../controllers/eventController')
 const isPromotorLogin = require('../middlewares/isPromotorLogin')
 const isEventOwner = require('../middlewares/isEventOwner')
+const {sendUploadToGCS,multer} = require('../middlewares/upload')
 
 router
       .get('/', eventController.getAll)
@@ -10,7 +11,9 @@ router
 
 router
       .use(isPromotorLogin)
-      .post('/', isEventOwner, eventController.create)
-      .put('/:eventId',  isEventOwner, eventController.edit)
+      // .post('/', eventController.create)
+      .post('/',  multer.single('file'), sendUploadToGCS, eventController.create)
+      // .put('/:eventId',  isEventOwner, eventController.edit)
+      .put('/:eventId',  isEventOwner,  multer.single('file'), sendUploadToGCS, eventController.edit)
 
 module.exports = router;
