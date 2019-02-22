@@ -2,15 +2,13 @@ const Event = require('../models/Event')
 
 module.exports = {
   create: (req,res) => {
+    let { name, place, date, price } =  req.body
+    let body = { name, place, date, price }
     let obj = {
-      name: req.body.name,
-      place: req.body.place,
-      date: req.body.date,
+      ...body,
+      promotor: req.current_promotor._id,
       userId: [],
-      userAttend: [],
-      price: req.body.price,
-      promotor: req.body.promotor,
-      status: req.body.status
+      userAttend: []
     }
 
     Event
