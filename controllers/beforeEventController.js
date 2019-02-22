@@ -1,4 +1,4 @@
-const beforeEvent = require('../models/StaticticBefore')
+const BeforeEvent = require('../models/StaticticBefore')
 
 module.exports = {
   create: (req,res) => {
