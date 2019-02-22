@@ -3,8 +3,9 @@ var router = express.Router();
 const promotorController = require('../controllers/promotorController')
 
 router
-      .get('/', promotorController.getAll)
+      // .get('/', promotorController.getAll)
       .get('/:promotorId', promotorController.getOne)
+      .post('/signin', promotorController.signIn)
       .post('/', promotorController.create)
       .put('/:promotorId', promotorController.edit)
 
