@@ -69,11 +69,11 @@ module.exports = {
 
     Promotor
       .findOne({ email })
-      .then(user => {
-        if (user) {
-          if (checkPassword(password, user.password)) {
+      .then(promotor => {
+        if (promotor) {
+          if (checkPassword(password, promotor.password)) {
             let token = jwt.sign({ email }, process.env.SECRET);
-            res.status(200).json({ message: 'success login', token: token, userId: user._id })
+            res.status(200).json({ message: 'success login', token: token, promotorId: promotor._id })
           } else {
             res.status(400).json({ message: "wrong email / password" })
           }
