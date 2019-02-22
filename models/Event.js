@@ -9,7 +9,7 @@ const EventSchema = new Schema({
   userAttend: [{type: Schema.Types.ObjectId, ref: 'User'}],
   price: Number,
   promotor: {type: Schema.Types.ObjectId, ref: 'Promotor'},
-  status: String
+  status: {type: String, default: "Available"}
 })
 
 const Event = mongoose.model('Event', EventSchema)
