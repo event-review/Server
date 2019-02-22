@@ -3,7 +3,7 @@ var router = express.Router();
 const beforeEventController = require('../controllers/beforeEventController')
 
 router
-      .get('/', beforeEventController.getAll)
+      .get('/:eventId', beforeEventController.getAll)
       .post('/', beforeEventController.create)
 
 module.exports = router;
