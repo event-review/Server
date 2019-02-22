@@ -1,4 +1,4 @@
-const afterEvent = require('../models/StatisticAfter')
+const AfterEvent = require('../models/StatisticAfter')
 
 module.exports = {
   create: (req,res) => {
