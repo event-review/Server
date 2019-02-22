@@ -1,4 +1,5 @@
 const Promotor = require('../models/Promotor')
+const { checkPassword } = require('../helpers/helper')
 
 module.exports = {
   create: (req, res) => {
@@ -8,10 +9,21 @@ module.exports = {
     Promotor
       .create(newPromotor)
       .then(promotor => {
-        res.status(201).json({ promotor })
+        res.status(200).json({ promotor, message: 'success register, please login to continue' })
       })
       .catch(error => {
-        res.status(400).json({ message: error.message })
+        let message = error.message
+        let errors = error.errors
+
+        if (errors.name) {
+          message = errors.name.message
+        } else if (errors.email) {
+          message = errors.email.message
+        } else if (errors.password) {
+          message = errors.password.message
+        }
+
+        res.status(400).json({ message })
       })
   },
 
@@ -46,6 +58,28 @@ module.exports = {
       .findByIdAndUpdate(promotorId, newPromotor, { new: true })
       .then(promotor => {
         res.status(201).json({ promotor })
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
+  },
+
+  signIn: (req, res) => {
+    let { email, password } = req.body
+
+    Promotor
+      .findOne({ email })
+      .then(user => {
+        if (user) {
+          if (checkPassword(password, user.password)) {
+            let token = jwt.sign({ email }, process.env.SECRET);
+            res.status(200).json({ message: 'success login', token: token, userId: user._id })
+          } else {
+            res.status(400).json({ message: "wrong email / password" })
+          }
+        } else {
+          res.status(400).json({ message: "wrong email / password" })
+        }
       })
       .catch(error => {
         res.status(400).json({ message: error.message })
