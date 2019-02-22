@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/userController')
+const isUserLogin = require('../middlewares/isUserLogin')
 
 router
-      // .get('/', userController.getAll)
-      .get('/:userId', userController.getOne)
-      .post('/', userController.create)
+      .post('/signup', userController.create)
       .post('/signin', userController.signIn)
-      .put('/:userId', userController.edit)
+
+router
+      .use(isUserLogin)
+      .get('/', userController.getOne)
+      .put('/', userController.edit)
 
 module.exports = router;

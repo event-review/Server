@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
 const promotorController = require('../controllers/promotorController')
+const isPromotorLogin = require('../middlewares/isPromotorLogin')
 
 router
-      // .get('/', promotorController.getAll)
-      .get('/:promotorId', promotorController.getOne)
       .post('/signin', promotorController.signIn)
-      .post('/', promotorController.create)
-      .put('/:promotorId', promotorController.edit)
+      .post('/signup', promotorController.create)
+
+router
+      .use(isPromotorLogin)
+      .get('/', promotorController.getOne)
+      .put('/', promotorController.edit)
 
 module.exports = router;
