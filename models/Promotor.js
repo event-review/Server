@@ -13,7 +13,7 @@ const promotorSchema = new Schema({
     validate: [{
       isAsync: true,
       validator: function (value, cb) {
-        User.findOne({ email: value }, function (err, res) {
+        Promotor.findOne({ email: value }, function (err, res) {
           cb(!res)
         })
       },
@@ -24,8 +24,14 @@ const promotorSchema = new Schema({
     type: String,
     required: [true, 'password must be filled']
   },
-  dob: Date,
-  gender: String
+  dob: {
+    type: Date,
+    required: [true, 'Date of Birth must be filled']
+  },
+  gender: {
+    type: String,
+    required: [true, 'Gender must be filled']
+  },
 })
 
 promotorSchema.pre('save',function(next) {

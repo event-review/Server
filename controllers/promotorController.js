@@ -1,10 +1,11 @@
 const Promotor = require('../models/Promotor')
 const { checkPassword } = require('../helpers/helper')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   create: (req, res) => {
-    let { name, email, gender, dob } = req.body
-    let newPromotor = { name, email, gender, dob }
+    let { name, email, password, gender, dob } = req.body
+    let newPromotor = { name, email, gender, dob, password }
 
     Promotor
       .create(newPromotor)
@@ -21,6 +22,10 @@ module.exports = {
           message = errors.email.message
         } else if (errors.password) {
           message = errors.password.message
+        } else if (errors.dob) {
+          message = errors.dob.message
+        } else if (errors.gender) {
+          message = errors.gender.message
         }
 
         res.status(400).json({ message })
@@ -32,7 +37,7 @@ module.exports = {
   },
 
   getOne: (req, res) => {
-    let { promotorId } = req.params
+    let promotorId = req.current_promotor._id
     Promotor
       .findById(promotorId)
       .then(promotor => {
@@ -44,7 +49,7 @@ module.exports = {
   },
 
   edit: (req, res) => {
-    let { promotorId } = req.params
+    let promotorId = req.current_promotor._id
     let { name, email, gender, dob } = req.body
     let newPromotor = { name, email, gender, dob }
 
@@ -57,7 +62,7 @@ module.exports = {
     Promotor
       .findByIdAndUpdate(promotorId, newPromotor, { new: true })
       .then(promotor => {
-        res.status(201).json({ promotor })
+        res.status(201).json({ promotor, message: 'success edit' })
       })
       .catch(error => {
         res.status(400).json({ message: error.message })
@@ -72,7 +77,7 @@ module.exports = {
       .then(promotor => {
         if (promotor) {
           if (checkPassword(password, promotor.password)) {
-            let token = jwt.sign({ email }, process.env.SECRET);
+            let token = jwt.sign({ email }, process.env.JWT_SECRET);
             res.status(200).json({ message: 'success login', token: token, promotorId: promotor._id })
           } else {
             res.status(400).json({ message: "wrong email / password" })
