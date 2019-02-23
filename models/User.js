@@ -32,6 +32,10 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Gender must be filled']
   },
+  role: {
+    type: String,
+    default: 'User'
+  }
 })
 
 UserSchema.pre('save', function (next) {

@@ -84,7 +84,7 @@ module.exports = {
       .then(promotor => {
         if (promotor) {
           if (checkPassword(password, promotor.password)) {
-            let token = jwt.sign({ email }, process.env.JWT_SECRET);
+            let token = jwt.sign({ email, role: 'Promotor' }, process.env.JWT_SECRET);
             res.status(200).json({ message: 'success login', token: token, promotorId: promotor._id })
           } else {
             res.status(400).json({ message: "wrong email / password" })

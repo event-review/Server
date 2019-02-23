@@ -32,6 +32,10 @@ const promotorSchema = new Schema({
     type: String,
     required: [true, 'Gender must be filled']
   },
+  role: {
+    type: String,
+    default: 'Promotor'
+  }
 })
 
 promotorSchema.pre('save',function(next) {
