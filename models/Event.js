@@ -8,7 +8,7 @@ const EventSchema = new Schema({
   userId: [{type: Schema.Types.ObjectId, ref: 'User'}],
   userAttend: [{type: Schema.Types.ObjectId, ref: 'User'}],
   price: Number,
-  promotor: {type: Schema.Types.ObjectId, ref: 'Promotor'},
+  promotorId: {type: Schema.Types.ObjectId, ref: 'Promotor'},
   status: {type: String, default: "Available"}
 })
 

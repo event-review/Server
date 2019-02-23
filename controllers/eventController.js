@@ -3,11 +3,10 @@ const Event = require('../models/Event')
 module.exports = {
   create: (req,res) => {
     let { name, place, date, price } =  (req.body.data)
-    // let { name, place, date, price } =  req.body
     let body = { name, place, date, price }
     let obj = {
       ...body,
-      promotor: req.current_promotor._id,
+      promotorId: req.current_promotor._id,
       userId: [],
       userAttend: []
     }
@@ -48,8 +47,7 @@ module.exports = {
   edit: (req,res) => {
     let { eventId } = req.params
     Event
-      .findOneAndUpdate({_id: eventId}, JSON.parse(req.body.data))
-      // .findOneAndUpdate({_id: eventId}, req.body)
+      .findOneAndUpdate({_id: eventId}, (req.body.data))
       .then(even => {
         res.status(200).json({event: even, message: 'success update an event'})
       })
