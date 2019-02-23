@@ -10,6 +10,8 @@ router
 router
       .use(isUserLogin)
       .get('/', userController.getOne)
+      .get('/myevent', userController.myEvent)
       .put('/', userController.edit)
+      .put('/join/:eventId', userController.joinEvent)
 
 module.exports = router;

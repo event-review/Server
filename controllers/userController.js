@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Event = require('../models/Event')
 const { checkPassword } = require('../helpers/helper')
 const jwt = require('jsonwebtoken')
 
@@ -59,7 +60,7 @@ module.exports = {
     User
       .find()
       .then(users => {
-        res.status(200).json({users})
+        res.status(200).json({ users })
       })
       .catch(error => {
         res.status(400).json({ message: error.message })
@@ -83,11 +84,39 @@ module.exports = {
 
     User
       .findByIdAndUpdate(userId, req.body, { new: true })
-      .then( user => {
-        res.status(200).json({user, message: 'success edit'})
+      .then(user => {
+        res.status(200).json({ user, message: 'success edit' })
       })
-      .catch( error => {
-        res.status(400).json({message: error.message})
+      .catch(error => {
+        res.status(400).json({ message: error.message })
       })
+  },
+
+  myEvent: (req, res) => {
+    let userId = req.current_user._id
+    Event
+      .find({ userId: { $in: [userId] } })
+      .populate('userId')
+      .populate('promotorId')
+      .then(events => {
+        res.status(200).json({ events })
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
+  },
+
+  joinEvent: (req, res) => {
+    let userId = req.current_user._id
+    let eventId = req.params.eventId
+    Event
+      .findByIdAndUpdate(eventId, { $push: { userId } })
+      .then(event => {
+        res.status(200).json({ message: 'success join event' })
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
+
   }
 }
