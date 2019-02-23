@@ -41,7 +41,7 @@ module.exports = {
       .then(user => {
         if (user) {
           if (checkPassword(password, user.password)) {
-            let token = jwt.sign({ email }, process.env.JWT_SECRET);
+            let token = jwt.sign({ email, role: 'User' }, process.env.JWT_SECRET);
             res.status(200).json({ message: 'success login', token: token, userId: user._id })
           } else {
             res.status(400).json({ message: "wrong email / password" })
