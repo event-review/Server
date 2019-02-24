@@ -24,10 +24,6 @@ const promotorSchema = new Schema({
     type: String,
     required: [true, 'password must be filled']
   },
-  gender: {
-    type: String,
-    required: [true, 'Gender must be filled']
-  },
   role: {
     type: String,
     default: 'Promotor'
