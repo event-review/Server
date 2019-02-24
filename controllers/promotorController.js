@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
   create: (req, res) => {
-    let { name, email, password, gender } = req.body
-    let newPromotor = { name, email, gender, password }
+    let { name, email, password } = req.body
+    let newPromotor = { name, email, password }
 
     Promotor
       .create(newPromotor)
@@ -22,8 +22,6 @@ module.exports = {
           message = errors.email.message
         } else if (errors.password) {
           message = errors.password.message
-        } else if (errors.gender) {
-          message = errors.gender.message
         }
 
         res.status(400).json({ message })
@@ -55,8 +53,8 @@ module.exports = {
 
   edit: (req, res) => {
     let promotorId = req.current_promotor._id
-    let { name, email, gender} = req.body
-    let newPromotor = { name, email, gender}
+    let { name, email} = req.body
+    let newPromotor = { name, email}
 
     for (let key in newPromotor) {
       if (newPromotor[key] === undefined) {
