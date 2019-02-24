@@ -24,10 +24,6 @@ const promotorSchema = new Schema({
     type: String,
     required: [true, 'password must be filled']
   },
-  dob: {
-    type: Date,
-    required: [true, 'Date of Birth must be filled']
-  },
   gender: {
     type: String,
     required: [true, 'Gender must be filled']
