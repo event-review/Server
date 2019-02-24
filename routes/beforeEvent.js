@@ -4,6 +4,6 @@ const beforeEventController = require('../controllers/beforeEventController')
 
 router
       .get('/:eventId', beforeEventController.getAll)
-      .post('/', beforeEventController.create)
+      // .post('/', beforeEventController.create)
 
 module.exports = router;

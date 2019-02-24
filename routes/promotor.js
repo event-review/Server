@@ -5,7 +5,7 @@ const isPromotorLogin = require('../middlewares/isPromotorLogin')
 
 router
       .post('/signin', promotorController.signIn)
-      .post('/signup', promotorController.create)
+      .post('/signup', promotorController.signUp)
 
 router
       .use(isPromotorLogin)

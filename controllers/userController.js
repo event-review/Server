@@ -6,8 +6,12 @@ const jwt = require('jsonwebtoken')
 module.exports = {
   create: (req, res) => {
     console.log('masuk register user')
-    let { name, email, password, gender, dob } = req.body
+    let { name, email, password, gender, dob } = JSON.parse(req.body.data)
     let user = { name, email, password, gender, dob }
+    
+    if (req.file) {
+      user.imageUrl = req.file.cloudStoragePublicUrl
+    }
 
     User
       .create(user)
@@ -35,6 +39,7 @@ module.exports = {
   },
 
   signIn: (req, res) => {
+    console.log('masuk login bos', req.body)
     let { email, password } = req.body
 
     User
@@ -81,9 +86,14 @@ module.exports = {
 
   edit: (req, res) => {
     let userId = req.current_user._id
+    let user = JSON.parse(req.body.data)
+    
+    if (req.file) {
+      user.imageUrl = req.file.cloudStoragePublicUrl
+    }
 
     User
-      .findByIdAndUpdate(userId, req.body, { new: true })
+      .findByIdAndUpdate(userId, user, { new: true })
       .then(user => {
         res.status(200).json({ user, message: 'success edit' })
       })

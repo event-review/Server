@@ -5,13 +5,17 @@ const StaticticAfter = require('../models/StatisticAfter')
 
 module.exports = {
   create: (req, res) => {
-    let { name, place, date, price } = (req.body.data)
+    let { name, place, date, price } = JSON.parse(req.body.data)
     let body = { name, place, date, price }
     let obj = {
       ...body,
       promotorId: req.current_promotor._id,
       userId: [],
       userAttend: []
+    }
+
+    if (req.file) {
+      obj.imageUrl = req.file.cloudStoragePublicUrl
     }
 
     Event
@@ -51,8 +55,15 @@ module.exports = {
 
   edit: (req, res) => {
     let { eventId } = req.params
+
+    let event = JSON.parse(req.body.data)
+
+    if (req.file) {
+      event.imageUrl = req.file.cloudStoragePublicUrl
+    }
+
     Event
-      .findOneAndUpdate({ _id: eventId }, (req.body.data))
+      .findOneAndUpdate(eventId, event)
       .then(even => {
         res.status(200).json({ event: even, message: 'success update an event' })
       })
@@ -66,19 +77,22 @@ module.exports = {
     Event
       .find(deviceId)
       .then(event => {
-        //ga tau harus dirubah apa, ke format date dulu ?
-        if (timeCapture > event.timeStart) {
-          return StaticticAfter.create( { eventId: event._id, image: imageUrl, emotion: emotion} )
+        if (event) {
+          //ga tau harus dirubah apa, ke format date dulu ?
+          if (timeCapture > event.timeStart) {
+            return StaticticAfter.create({ eventId: event._id, image: imageUrl, emotion: emotion })
+          } else {
+            return StaticticBefore.create({ eventId: event._id, image: imageUrl, emotion: emotion })
+          }
         } else {
-          return StaticticBefore.create( { eventId: event._id, image: imageUrl, emotion: emotion} )
+          throw new Error({message: 'not found'})
         }
       })
-      .then( statistic => {
+      .then(statistic => {
         res.status(200).json({ message: 'success identify user emotion' })
       })
       .catch(error => {
         res.status(400).json({ message: error.message })
       })
-
   }
 }
