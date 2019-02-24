@@ -24,6 +24,8 @@ module.exports = {
   getAll: (req,res)=> {
     Event
       .find()
+      .populate('promotorId')
+      .populate('userId')
       .then(events => {
         res.status(200).json({events: events, message: 'success get all events'})
       })
