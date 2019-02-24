@@ -3,7 +3,7 @@ const { checkPassword } = require('../helpers/helper')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
-  create: (req, res) => {
+  signUp: (req, res) => {
     let { name, email, password } = req.body
     let newPromotor = { name, email, password }
 
@@ -30,13 +30,13 @@ module.exports = {
 
   getAll: (req, res) => {
     Promotor
-    .find()
-    .then(promotors => {
-      res.json({ promotors })
-    })
-    .catch(error => {
-      res.status(400).json({ message: error.message })
-    })
+      .find()
+      .then(promotors => {
+        res.json({ promotors })
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
   },
 
   getOne: (req, res) => {
@@ -53,8 +53,8 @@ module.exports = {
 
   edit: (req, res) => {
     let promotorId = req.current_promotor._id
-    let { name, email} = req.body
-    let newPromotor = { name, email}
+    let { name, email, password } = req.body
+    let newPromotor = { name, email, password }
 
     for (let key in newPromotor) {
       if (newPromotor[key] === undefined) {

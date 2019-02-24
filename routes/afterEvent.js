@@ -4,6 +4,6 @@ const afterEventController = require('../controllers/afterEventController')
 
 router
       .get('/:eventId', afterEventController.getAll)
-      .post('/', afterEventController.create)
+      // .post('/', afterEventController.create)
 
 module.exports = router;
