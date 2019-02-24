@@ -35,7 +35,8 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: 'User'
-  }
+  },
+  imageUrl: String
 })
 
 UserSchema.pre('save', function (next) {
