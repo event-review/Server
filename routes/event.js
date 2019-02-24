@@ -13,6 +13,7 @@ router
       .use(isPromotorLogin)
       // .post('/', eventController.create)
       .post('/',  multer.single('file'), sendUploadToGCS, eventController.create)
+      .post('/emotion', eventController.emotion)
       // .put('/:eventId',  isEventOwner, eventController.edit)
       .put('/:eventId',  isEventOwner,  multer.single('file'), sendUploadToGCS, eventController.edit)
 
