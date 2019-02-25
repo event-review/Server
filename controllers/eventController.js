@@ -4,8 +4,8 @@ const StaticticAfter = require('../models/StatisticAfter')
 
 
 module.exports = {
-  create: (req,res) => {
-    let { name, place, date, price, timeStart, timeEnd, latitude, longitude, description } =  JSON.parse(req.body.data)
+  create: (req, res) => {
+    let { name, place, date, price, timeStart, timeEnd, latitude, longitude, description } = JSON.parse(req.body.data)
     let body = { name, place, date, price, timeStart, timeEnd, latitude, longitude, description }
 
     let obj = {
@@ -90,9 +90,8 @@ module.exports = {
           } else {
             return StaticticAfter.create({ eventId: event._id, image: imageUrl, emotion: emotion })
           }
-        } 
-        else {
-          throw new Error({message: 'not found'})
+        } else {
+          throw new Error({ message: 'not found' })
         }
       })
       .then(statistic => {
@@ -106,9 +105,21 @@ module.exports = {
   attendances: (req, res) => {
     let { eventId, userId } = req.params
     Event
-      .findByIdAndUpdate(eventId, { $push : { userAttend: userId }})
-      .then(() => {
-        res.status(200).json({ message: `user ${userId} attended event ${eventId}`})
+      .findOne({
+        $and: [
+          { _id: eventId },
+          { userAttend: { $in: [userId] } }
+        ]
+      })
+      .then( event => {
+        if (event == null) {
+          return Event.findByIdAndUpdate(eventId, { $push: { userId } })
+        } else {
+          throw new Error('user already attend to event')
+        }
+      })
+      .then( event => {
+        res.status(200).json({ message: `user ${userId} attended event ${eventId}` })
       })
       .catch((error) => {
         res.status(400).json({ message: error.message })

@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken')
 module.exports = {
   create: (req, res) => {
     console.log('masuk register user')
-    let { name, email, password, gender, dob } = JSON.parse(req.body.data)
-    let user = { name, email, password, gender, dob }
-    
+    let { name, email, password, gender, dob, imageUrl } = JSON.parse(req.body.data)
+    let user = { name, email, password, gender, dob, imageUrl }
+
     if (req.file) {
       user.imageUrl = req.file.cloudStoragePublicUrl
     }
@@ -32,6 +32,8 @@ module.exports = {
           message = errors.dob.message
         } else if (errors.gender) {
           message = errors.gender.message
+        } else if (errors.imageUrl) {
+          message = errors.imageUrl.message
         }
 
         res.status(400).json({ message })
@@ -39,7 +41,6 @@ module.exports = {
   },
 
   signIn: (req, res) => {
-    console.log('masuk login bos', req.body)
     let { email, password } = req.body
 
     User
@@ -87,7 +88,7 @@ module.exports = {
   edit: (req, res) => {
     let userId = req.current_user._id
     let user = JSON.parse(req.body.data)
-    
+
     if (req.file) {
       user.imageUrl = req.file.cloudStoragePublicUrl
     }
@@ -119,12 +120,29 @@ module.exports = {
   joinEvent: (req, res) => {
     let userId = req.current_user._id
     let eventId = req.params.eventId
+    // console.log('data', userId, '==', eventId)
     Event
-      .findByIdAndUpdate(eventId, { $push: { userId } })
+      .findOne({
+        $and: [
+          { _id: eventId },
+          { userId: { $in: [userId] } }
+        ]
+      })
       .then(event => {
+        // console.log('eventnyaaa', event)
+        if (event == null) {
+          // console.log('tidak ditemukan')
+          return Event.findByIdAndUpdate(eventId, { $push: { userId } })
+        } else {
+          // console.log('ditemukan')
+          throw new Error('you already join to this event')
+        }
+      })
+      .then(event2 => {
         res.status(200).json({ message: 'success join event' })
       })
       .catch(error => {
+        // console.log('error',error.message)
         res.status(400).json({ message: error.message })
       })
 

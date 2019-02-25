@@ -12,7 +12,6 @@ function isPromotorLogin(req,res,next){
       })
       .then(promotor => {
         if(promotor){
-          // console.log('user found')
           req.current_promotor = promotor
           next()
         } else {

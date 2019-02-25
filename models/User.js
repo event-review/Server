@@ -36,7 +36,10 @@ const UserSchema = new Schema({
     type: String,
     default: 'User'
   },
-  imageUrl: String
+  imageUrl: {
+    type: String,
+    required: [true, 'You must upload your photo profile']
+  },
 })
 
 UserSchema.pre('save', function (next) {
