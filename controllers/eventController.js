@@ -74,18 +74,24 @@ module.exports = {
   },
 
   emotion: (req, res) => {
-    let { deviceId, emotion, imageUrl, timeCapture } = req.body
+    let { deviceId, emotion, imageUrl } = req.body
     Event
       .find(deviceId)
       .then(event => {
         if (event) {
-          //ga tau harus dirubah apa, ke format date dulu ?
-          if (timeCapture > event.timeStart) {
-            return StaticticAfter.create({ eventId: event._id, image: imageUrl, emotion: emotion })
-          } else {
+          let camera_time = new Date()
+          let converted_camera_time = Number(camera_time.getHours() + 7) + Number(camera_time.getMinutes()/60)
+          let timeEnd = event.timeEnd.split(':')
+          let timeEndx = Number(timeEnd[0])
+          let timeEndy = Number(timeEnd[1] / 60)
+          let converted_timeEnd = timeEndx + timeEndy
+          if (converted_camera_time < converted_timeEnd) {
             return StaticticBefore.create({ eventId: event._id, image: imageUrl, emotion: emotion })
+          } else {
+            return StaticticAfter.create({ eventId: event._id, image: imageUrl, emotion: emotion })
           }
-        } else {
+        } 
+        else {
           throw new Error({message: 'not found'})
         }
       })
