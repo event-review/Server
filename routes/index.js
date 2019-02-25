@@ -29,9 +29,6 @@ router.get('/checklogin', (req, res, next) => {
             }
 
           })
-          .catch(error => {
-            res.status(400).send({ message: error.message })
-          })
       } else if (decoded.role == 'User') {
         User.findOne({
           email: decoded.email
@@ -43,9 +40,6 @@ router.get('/checklogin', (req, res, next) => {
               res.status(401).send({ isLogin: false, role: 'User', message: 'please login' })
             }
 
-          })
-          .catch(error => {
-            res.status(400).send({ message: error.message })
           })
       }
     }
