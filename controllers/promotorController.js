@@ -16,6 +16,7 @@ module.exports = {
         let message = error.message
         let errors = error.errors
 
+        //tag
         if (errors.name) {
           message = errors.name.message
         } else if (errors.email) {
@@ -28,16 +29,17 @@ module.exports = {
       })
   },
 
-  getAll: (req, res) => {
-    Promotor
-      .find()
-      .then(promotors => {
-        res.json({ promotors })
-      })
-      .catch(error => {
-        res.status(400).json({ message: error.message })
-      })
-  },
+  //Please Hapus Gk dipakai
+  // getAll: (req, res) => {
+  //   Promotor
+  //     .find()
+  //     .then(promotors => {
+  //       res.json({ promotors })
+  //     })
+  //     .catch(error => {
+  //       res.status(400).json({ message: error.message })
+  //     })
+  // },
 
   getOne: (req, res) => {
     let promotorId = req.current_promotor._id
