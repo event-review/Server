@@ -76,15 +76,20 @@ module.exports = {
   emotion: (req, res) => {
     let { deviceId, emotion, imageUrl } = req.body
     Event
-      .find(deviceId)
+      .find({deviceId})
       .then(event => {
         if (event) {
           let camera_time = new Date()
+          // console.log('NOW', camera_time.getHours())
           let converted_camera_time = Number(camera_time.getHours() + 7) + Number(camera_time.getMinutes()/60)
-          let timeEnd = event.timeEnd.split(':')
+          if(converted_camera_time > 24) {
+            converted_camera_time -= 24
+          }
+          let timeEnd = event[0].timeEnd.split(':')
           let timeEndx = Number(timeEnd[0])
           let timeEndy = Number(timeEnd[1] / 60)
           let converted_timeEnd = timeEndx + timeEndy
+          // console.log(converted_camera_time + "==" +converted_timeEnd)
           if (converted_camera_time < converted_timeEnd) {
             return StaticticBefore.create({ eventId: event._id, image: imageUrl, emotion: emotion })
           } else {
