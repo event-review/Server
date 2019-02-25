@@ -11,5 +11,6 @@ router
       .use(isPromotorLogin)
       .get('/', promotorController.getOne)
       .put('/', promotorController.edit)
+      .get('/events', promotorController.getMyEvents)
 
 module.exports = router;

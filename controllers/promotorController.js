@@ -1,4 +1,5 @@
 const Promotor = require('../models/Promotor')
+const Event = require('../models/Event')
 const { checkPassword } = require('../helpers/helper')
 const jwt = require('jsonwebtoken')
 
@@ -90,6 +91,19 @@ module.exports = {
         } else {
           res.status(400).json({ message: "wrong email / password" })
         }
+      })
+      .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
+  },
+
+  getMyEvents: (req, res) => {
+    let promotorId = req.current_promotor._id
+
+    Event
+      .find({ promotorId: promotorId })
+      .then(events => {
+        res.status(200).json({ events, message: 'success get my events' })
       })
       .catch(error => {
         res.status(400).json({ message: error.message })
