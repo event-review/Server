@@ -13,7 +13,9 @@ const EventSchema = new Schema({
   promotorId: {type: Schema.Types.ObjectId, ref: 'Promotor'},
   status: {type: String, default: "Available"},
   imageUrl: String,
-  deviceId: String
+  deviceId: String,
+  latitude: String,
+  longitude: String
 })
 
 const Event = mongoose.model('Event', EventSchema)
