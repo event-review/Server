@@ -9,11 +9,11 @@ router
       .get('/', eventController.getAll)
       .get('/attend/:userId/:eventId', eventController.attendances)
       .get('/:eventId', eventController.getOne)
+      .post('/emotion', eventController.emotion)
 
 router
       .use(isPromotorLogin)
       .post('/',  multer.single('file'), sendUploadToGCS, eventController.create)
-      .post('/emotion', eventController.emotion)
       .put('/:eventId',  isEventOwner,  multer.single('file'), sendUploadToGCS, eventController.edit)
 
 module.exports = router;
