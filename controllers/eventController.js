@@ -4,10 +4,17 @@ const StaticticAfter = require('../models/StatisticAfter')
 
 
 module.exports = {
+<<<<<<< HEAD
   create: (req,res) => {
     let { name, place, date, price, timeStart, timeEnd, latitude, longitude, description } =  JSON.parse(req.body.data)
     let body = { name, place, date, price, timeStart, timeEnd, latitude, longitude, description }
 
+=======
+  create: (req, res) => {
+    console.log('masuk create event')
+    let { name, place, date, price } = JSON.parse(req.body.data)
+    let body = { name, place, date, price }
+>>>>>>> server
     let obj = {
       ...body,
       promotorId: req.current_promotor._id,
