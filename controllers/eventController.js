@@ -5,8 +5,8 @@ const StaticticAfter = require('../models/StatisticAfter')
 
 module.exports = {
   create: (req,res) => {
-    let { name, place, date, price, latitude, longitude } =  JSON.parse(req.body.data)
-    let body = { name, place, date, price, latitude, longitude }
+    let { name, place, date, price, timeStart, timeEnd, latitude, longitude } =  JSON.parse(req.body.data)
+    let body = { name, place, date, price, timeStart, timeEnd, latitude, longitude }
 
     let obj = {
       ...body,
