@@ -41,7 +41,6 @@ module.exports = {
   },
 
   signIn: (req, res) => {
-    console.log('masuk login bos', req.body)
     let { email, password } = req.body
 
     User
@@ -121,28 +120,29 @@ module.exports = {
   joinEvent: (req, res) => {
     let userId = req.current_user._id
     let eventId = req.params.eventId
+    // console.log('data', userId, '==', eventId)
     Event
       .findOne({
         $and: [
-          { event: eventId },
+          { _id: eventId },
           { userId: { $in: [userId] } }
         ]
       })
       .then(event => {
-        console.log('eventnyaaa', event)
+        // console.log('eventnyaaa', event)
         if (event == null) {
-          console.log('tidak ditemukan')
-          throw new Error('you already join to this event')
-        } else {
-          console.log('ditemukan')
+          // console.log('tidak ditemukan')
           return Event.findByIdAndUpdate(eventId, { $push: { userId } })
+        } else {
+          // console.log('ditemukan')
+          throw new Error('you already join to this event')
         }
       })
       .then(event2 => {
         res.status(200).json({ message: 'success join event' })
       })
       .catch(error => {
-        console.log('error',error.message)
+        // console.log('error',error.message)
         res.status(400).json({ message: error.message })
       })
 

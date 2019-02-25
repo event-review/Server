@@ -3,12 +3,14 @@ var path = require('path');
 var cors = require('cors')
 const mongoose = require('mongoose');
 
-let db_connection = 'mongodb://eventreview123:eventreview123@eventreview-shard-00-00-ybagi.mongodb.net:27017,eventreview-shard-00-01-ybagi.mongodb.net:27017,eventreview-shard-00-02-ybagi.mongodb.net:27017/test?ssl=true&replicaSet=eventreview-shard-0&authSource=admin&retryWrites=true'
-if(process.env.NODE_ENV == 'test') {
-    db_connection = 'mongodb://localhost/ereviewd-test'
-}
-mongoose.connect(db_connection);
+// let db_connection = 'mongodb://eventreview123:eventreview123@eventreview-shard-00-00-ybagi.mongodb.net:27017,eventreview-shard-00-01-ybagi.mongodb.net:27017,eventreview-shard-00-02-ybagi.mongodb.net:27017/test?ssl=true&replicaSet=eventreview-shard-0&authSource=admin&retryWrites=true'
+// if(process.env.NODE_ENV == 'test') {
+//     db_connection = 'mongodb://localhost/ereviewd-test'
+// }
+// mongoose.connect(db_connection);
 // mongoose.connect('mongodb://localhost:27017/FinalProject', {useNewUrlParser: true});
+// mongoose.connect('mongodb://eventreview123:eventreview123@eventreview-shard-00-00-ybagi.mongodb.net:27017,eventreview-shard-00-01-ybagi.mongodb.net:27017,eventreview-shard-00-02-ybagi.mongodb.net:27017/test?ssl=true&replicaSet=eventreview-shard-0&authSource=admin&retryWrites=true');
+mongoose.connect('mongodb://localhost:27017/FinalProject', {useNewUrlParser: true});
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var promotorRouter = require('./routes/promotor');
