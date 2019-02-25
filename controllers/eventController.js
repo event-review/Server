@@ -64,7 +64,7 @@ module.exports = {
     }
 
     Event
-      .findOneAndUpdate(eventId, event)
+      .findByIdAndUpdate(eventId, event)
       .then(even => {
         res.status(200).json({ event: even, message: 'success update an event' })
       })
@@ -93,6 +93,18 @@ module.exports = {
         res.status(200).json({ message: 'success identify user emotion' })
       })
       .catch(error => {
+        res.status(400).json({ message: error.message })
+      })
+  },
+
+  attendances: (req, res) => {
+    let { eventId, userId } = req.params
+    Event
+      .findByIdAndUpdate(eventId, { $push : { userAttend: userId }})
+      .then(() => {
+        res.status(200).json({ message: `user ${userId} attended event ${eventId}`})
+      })
+      .catch((error) => {
         res.status(400).json({ message: error.message })
       })
   }
