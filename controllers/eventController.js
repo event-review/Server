@@ -4,9 +4,10 @@ const StaticticAfter = require('../models/StatisticAfter')
 
 
 module.exports = {
-  create: (req, res) => {
-    let { name, place, date, price } = JSON.parse(req.body.data)
-    let body = { name, place, date, price }
+  create: (req,res) => {
+    let { name, place, date, price, latitude, longitude } =  JSON.parse(req.body.data)
+    let body = { name, place, date, price, latitude, longitude }
+
     let obj = {
       ...body,
       promotorId: req.current_promotor._id,
