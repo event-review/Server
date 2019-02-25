@@ -7,6 +7,7 @@ const {sendUploadToGCS,multer} = require('../middlewares/upload')
 
 router
       .get('/', eventController.getAll)
+      .get('/attend/:userId/:eventId', eventController.attendances)
       .get('/:eventId', eventController.getOne)
 
 router
