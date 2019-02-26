@@ -58,6 +58,7 @@ module.exports = {
 
   edit: (req, res) => {
     let { eventId } = req.params
+    console.log(req.body.data)
 
     let event = JSON.parse(req.body.data)
 
