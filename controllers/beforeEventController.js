@@ -22,7 +22,8 @@ module.exports = {
     let { eventId } = req.params
     BeforeEvent
       .find({eventId})
-      .then(stats => {
+      .populate('eventId')
+      .then(events => {
         res.status(200).json({stats: events, message: 'success get all before event stats'})
       })
       .catch(error => {
