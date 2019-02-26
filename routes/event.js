@@ -14,6 +14,6 @@ router
 router
       .use(isPromotorLogin)
       .post('/',  multer.single('file'), sendUploadToGCS, eventController.create)
-      .put('/:eventId',  isEventOwner,  multer.single('file'), sendUploadToGCS, eventController.edit)
+      .patch('/:eventId',  isEventOwner,  multer.single('file'), sendUploadToGCS, eventController.edit)
 
 module.exports = router;
