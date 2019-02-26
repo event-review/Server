@@ -1,4 +1,4 @@
-var app  = require('../app.js')
+var app = require('../app.js')
 var chai = require('chai')
 var chaiHttp = require('chai-http')
 var expect = chai.expect
@@ -30,7 +30,7 @@ describe('Promotor', () => {
     })
 
     afterEach((done) => {
-        Promotor.remove({} , () => {
+        Promotor.remove({}, () => {
             done()
         })
     })
@@ -43,7 +43,10 @@ describe('Promotor', () => {
         }
         chai.request(app)
             .post('/promotors/signup')
-            .send(obj)
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(200)
                 expect(result.body.promotor).to.have.property('name')
@@ -123,7 +126,10 @@ describe('Promotor', () => {
         }
         chai.request(app)
             .post('/promotors/signup')
-            .send(obj)
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(400)
                 expect(result.body.promotor).to.have.property('name')
@@ -139,7 +145,10 @@ describe('Promotor', () => {
         }
         chai.request(app)
             .post('/promotors/signup')
-            .send(obj)
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(400)
                 expect(result.body.promotor).to.have.property('name')
@@ -156,7 +165,10 @@ describe('Promotor', () => {
         }
         chai.request(app)
             .post('/promotors/signup')
-            .send(obj)
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(400)
                 expect(result.body.promotor).to.have.property('name')
@@ -193,8 +205,11 @@ describe('Promotor', () => {
 
         chai.request(app)
             .put('/promotors')
-            .set({token})
-            .send(obj)
+            .set({ token })
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(201)
                 expect(result.body.promotor).to.have.property('name')
@@ -220,8 +235,11 @@ describe('Promotor', () => {
 
         chai.request(app)
             .put('/promotors')
-            .set({token})
-            .send(obj)
+            .set({ token })
+            .type('form')
+            .send({
+                data: JSON.stringify(obj)
+            })
             .end((err, result) => {
                 expect(result).to.have.status(400)
                 expect(result.body.promotor).to.have.property('message')
@@ -235,7 +253,7 @@ describe('Promotor', () => {
 
         chai.request(app)
             .get('/promotors')
-            .set({token})
+            .set({ token })
             .end((err, result) => {
                 expect(result).to.have.status(200)
                 expect(result.body.promotor).to.have.property('name')
@@ -251,7 +269,7 @@ describe('Promotor', () => {
         let token2 = `${token.slice(2)}sa`
         chai.request(app)
             .get('/promotors')
-            .set({token : token2})
+            .set({ token: token2 })
             .end((err, result) => {
                 done()
             })
