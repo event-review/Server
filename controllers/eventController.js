@@ -119,7 +119,7 @@ module.exports = {
       })
       .then( event => {
         if (event == null) {
-          return Event.findByIdAndUpdate(eventId, { $push: { userId } })
+          return Event.findByIdAndUpdate(eventId, { $push: { userAttend: userId } })
         } else {
           throw new Error('user already attend to event')
         }

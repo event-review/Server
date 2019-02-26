@@ -43,10 +43,7 @@ describe('Promotor', () => {
         }
         chai.request(app)
             .post('/promotors/signup')
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
+            .send(obj)
             .end((err, result) => {
                 expect(result).to.have.status(200)
                 expect(result.body.promotor).to.have.property('name')
@@ -122,38 +119,16 @@ describe('Promotor', () => {
 
     it('POST /promotors/signup should not return new registered promotors', (done) => {
         let obj = {
-
+            name: '',
+            email: '',
+            password: ''
         }
         chai.request(app)
             .post('/promotors/signup')
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
+            .send(obj)
             .end((err, result) => {
                 expect(result).to.have.status(400)
-                expect(result.body.promotor).to.have.property('name')
-                expect(result.body.promotor).to.have.property('email')
-                expect(result.body.promotor).to.have.property('password')
-                done()
-            })
-    })
-
-    it('POST /promotors/signup should not return new registered promotors', (done) => {
-        let obj = {
-            name: 'Christian'
-        }
-        chai.request(app)
-            .post('/promotors/signup')
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
-            .end((err, result) => {
-                expect(result).to.have.status(400)
-                expect(result.body.promotor).to.have.property('name')
-                expect(result.body.promotor).to.have.property('email')
-                expect(result.body.promotor).to.have.property('password')
+                expect(result.body.promotor).to.have.property('message')
                 done()
             })
     })
@@ -161,19 +136,31 @@ describe('Promotor', () => {
     it('POST /promotors/signup should not return new registered promotors', (done) => {
         let obj = {
             name: 'Christian',
-            email: 'cha@mail.com'
+            email: '',
+            password: ''
         }
         chai.request(app)
             .post('/promotors/signup')
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
+            .send(obj)
             .end((err, result) => {
                 expect(result).to.have.status(400)
-                expect(result.body.promotor).to.have.property('name')
-                expect(result.body.promotor).to.have.property('email')
-                expect(result.body.promotor).to.have.property('password')
+                expect(result.body.promotor).to.have.property('message')
+                done()
+            })
+    })
+
+    it('POST /promotors/signup should not return new registered promotors', (done) => {
+        let obj = {
+            name: 'Christian',
+            email: 'cha@mail.com',
+            password: ''
+        }
+        chai.request(app)
+            .post('/promotors/signup')
+            .send(obj)
+            .end((err, result) => {
+                expect(result).to.have.status(400)
+                expect(result.body.promotor).to.have.property('message')
                 done()
             })
     })
@@ -206,10 +193,7 @@ describe('Promotor', () => {
         chai.request(app)
             .put('/promotors')
             .set({ token })
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
+            .send(obj)
             .end((err, result) => {
                 expect(result).to.have.status(201)
                 expect(result.body.promotor).to.have.property('name')
@@ -236,10 +220,7 @@ describe('Promotor', () => {
         chai.request(app)
             .put('/promotors')
             .set({ token })
-            .type('form')
-            .send({
-                data: JSON.stringify(obj)
-            })
+            .send(obj)
             .end((err, result) => {
                 expect(result).to.have.status(400)
                 expect(result.body.promotor).to.have.property('message')
