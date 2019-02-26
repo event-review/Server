@@ -3,9 +3,11 @@ var chai = require('chai')
 var chaiHttp = require('chai-http')
 var expect = chai.expect
 var User = require('../models/User')
+var Event = require('../models/Event')
 
 chai.use(chaiHttp)
 var token = ''
+var userId = ''
 
 describe('User', () => {
   beforeEach((done) => {
@@ -88,6 +90,8 @@ describe('User', () => {
         expect(result.body).to.have.property('token')
         expect(result.body).to.have.property('message')
         token = result.body.token
+        userId = result.body.userId
+        console.log("USERID====",userId)
         expect(result.body.message).to.equal('success login')
         done()
       })
@@ -128,7 +132,7 @@ describe('User', () => {
   })
 
 
-  it('POST /users/signup should not return new registered users 1', (done) => {
+  it('POST /users/signup should not return new registered users if name null', (done) => {
     let obj = {
       name: '',
       email: '',
@@ -150,7 +154,7 @@ describe('User', () => {
       })
   })
 
-  it('POST /users/signup should not return new registered users 2', (done) => {
+  it('POST /users/signup should not return new registered users if email null', (done) => {
     let obj = {
       name: 'Christian',
       email: '',
@@ -173,7 +177,7 @@ describe('User', () => {
       })
   })
 
-  it('POST /users/signup should not return new registered users 3', (done) => {
+  it('POST /users/signup should not return new registered users if password null', (done) => {
     let obj = {
       name: 'Christian',
       email: 'cha@mail.com',
@@ -192,6 +196,75 @@ describe('User', () => {
         expect(result).to.have.status(400)
         expect(result.body).to.have.property('message')
         // expect(result.body.message).to.equal('')
+        done()
+      })
+  })
+
+  it('POST /users/signup should not return new registered users if dob null', (done) => {
+    let obj = {
+      name: 'Christian',
+      email: 'cha@mail.com',
+      password: '1234',
+      dob: '',
+      gender: '',
+      imageUrl: ''
+    }
+    chai.request(app)
+      .post('/users/signup')
+      .type('form')
+      .send({
+        data: JSON.stringify(obj)
+      })
+      .end((err, result) => {
+        expect(result).to.have.status(400)
+        expect(result.body).to.have.property('message')
+        // expect(result.body.message).to.equal('')
+        done()
+      })
+  })
+
+  it('POST /users/signup should not return new registered users if gender null', (done) => {
+    let obj = {
+      name: 'Christian',
+      email: 'cha@mail.com',
+      password: '1234',
+      dob: '01-01-2001',
+      gender: '',
+      imageUrl: ''
+    }
+    chai.request(app)
+      .post('/users/signup')
+      .type('form')
+      .send({
+        data: JSON.stringify(obj)
+      })
+      .end((err, result) => {
+        expect(result).to.have.status(400)
+        expect(result.body).to.have.property('message')
+        // expect(result.body.message).to.equal('')
+        done()
+      })
+  })
+
+  it('POST /users/signup should not return new registered users if imageUrl null', (done) => {
+    let obj = {
+      name: 'Christian',
+      email: 'cha@mail.com',
+      password: '1234',
+      dob: '01-01-2001',
+      gender: 'male',
+      imageUrl: ''
+    }
+    chai.request(app)
+      .post('/users/signup')
+      .type('form')
+      .send({
+        data: JSON.stringify(obj)
+      })
+      .end((err, result) => {
+        expect(result).to.have.status(400)
+        expect(result.body).to.have.property('message')
+        expect(result.body.message).to.equal('You must upload your photo profile')
         done()
       })
   })
@@ -265,7 +338,7 @@ describe('User', () => {
   })
 
 
-  it('GET /users/ should have  promotors data', (done) => {
+  it('GET /users/ should have  user data', (done) => {
 
     chai.request(app)
       .get('/users')
@@ -281,12 +354,48 @@ describe('User', () => {
   })
 
 
-  it('GET /users/ should not have  promotors data because not valid token', (done) => {
+  it('GET /users/ should not have  user data because not valid token', (done) => {
     let token2 = `${token.slice(2)}sa`
     chai.request(app)
       .get('/users')
       .set({ token: token2 })
       .end((err, result) => {
+        done()
+      })
+  })
+
+  it('PUT /users/join/:eventId should return message success join event', (done) => {
+    let newevent = {
+      name: "Hacktiv8 Workshop",
+      place: "Jalan Iskandar Muda",
+      date: new Date,
+      price: 15000,
+      timeStart: "12:00",
+      timeEnd: "15:00",
+      latitude: "12323123",
+      longitude: "12323213",
+      description: "Hacktiv8 Workshop"
+    };
+    var createdEvent
+
+    Event
+      .create(newevent)
+      .then(data => {
+        console.log('data', data)
+        console.log('userID', userId)
+        createdEvent = data
+        return Event.findByIdAndUpdate(createdEvent._id, { $push: { userId } })
+      })
+      .then(event => {
+        console.log("event", event)
+      })
+
+    chai.request(app)
+      .get(`/users/joint/${createdEvent._id}`)
+      .set({ token })
+      .end((err, result) => {
+        expect(result).to.have.status(400)
+        expect(result.body.user).to.have.property('message')
         done()
       })
   })
