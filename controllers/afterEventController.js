@@ -22,7 +22,7 @@ module.exports = {
     let { eventId } = req.params
     AfterEvent
       .find({eventId})
-      .populate('eventId')
+      .populate({path : 'eventId', populate : {path : 'userAttend'}})
       .then(events => {
         res.status(200).json({stats: events, message: 'success get all after event stats'})
       })
