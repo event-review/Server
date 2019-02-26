@@ -46,6 +46,8 @@ module.exports = {
     let { eventId } = req.params
     Event
       .findById(eventId)
+      .populate('userId')
+      .populate('userAttend')
       .then(even => {
         res.status(200).json({ event: even, message: 'success get an event' })
       })
