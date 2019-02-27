@@ -18,6 +18,11 @@ const UserSchema = new Schema({
         })
       },
       message: `email is already registered`
+    }, {
+      validator: v => {
+        return /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/.test(v)
+      },
+      message: 'format email is wrong'
     }]
   },
   password: {

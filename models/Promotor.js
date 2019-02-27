@@ -22,7 +22,7 @@ const promotorSchema = new Schema({
       validator: v => {
         return /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/.test(v)
       },
-      message: 'Invalid Email Format'
+      message: 'format email is wrong'
     }]
   },
   password: {
