@@ -18,6 +18,11 @@ const promotorSchema = new Schema({
         })
       },
       message: `email is already registered`
+    }, {
+      validator: v => {
+        return /^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/.test(v)
+      },
+      message: 'Invalid Email Format'
     }]
   },
   password: {
@@ -30,8 +35,8 @@ const promotorSchema = new Schema({
   }
 })
 
-promotorSchema.pre('save',function(next) {
-  if(this.password) {
+promotorSchema.pre('save', function (next) {
+  if (this.password) {
     this.password = encrypt(this.password)
   }
   next()
